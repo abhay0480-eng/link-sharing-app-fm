@@ -61,14 +61,6 @@ const AddLink: React.FC<{ index: number }> = ({index}) => {
           name="Platform"
           control={control}
           render={({ field }) => (
-            // <select {...field} onChange={(e) => handleFieldChange("Platform",e.target.value as Platform)}>
-            //   {Object.values(Platform).map((platform) => (
-            //     <option key={platform} value={platform}>
-            //       {platform}
-            //     </option>
-            //   ))}
-            // </select>
-           
             <Select
               {...field}
               labelId="demo-simple-select-label"
@@ -117,25 +109,3 @@ const AddLink: React.FC<{ index: number }> = ({index}) => {
 }
 
 export default AddLink
-
-{/* <div>
-            <p>Platform</p>
-            <div className='p-3 flex justify-between items-center'>
-              <ImageIcon src={`/image/icon-${}.svg`}/>
-              <div className='flex justify-between items-center'>
-              <ImageIcon img={`icon-github`}/>
-              <div>GitHub</div>
-              </div>
-              <ImageIcon img={`icon-chevron-down`}/>
-            </div>
-        </div> */}
-        // <div>
-        //     <p>Link</p>
-        //     <div className='p-3 flex justify-between items-center'>
-        //       {/* <ImageIcon src={`/image/icon-${}.svg`}/> */}
-        //       <div className='flex justify-between items-center'>
-        //       <ImageIcon img={`icon-link`}/>
-        //       <div>e.g. https://www.github.com/johnappleseed</div>
-        //       </div>
-        //     </div>
-        // </div>
