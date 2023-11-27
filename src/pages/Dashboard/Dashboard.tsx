@@ -1,4 +1,4 @@
-import React, { createContext,  useState } from 'react'
+import React, { createContext,  useEffect,  useState } from 'react'
 import Button from '../../Components/Button'
 import ImageIcon from '../../Components/ImageIcon'
 import { Link } from 'react-router-dom'
@@ -28,13 +28,19 @@ enum Platform {
   interface IFormInput {
     LinkUrl: string
     Platform: Platform
+    
    
   }
+
+//   interface IUpload{
+//     fileInput:File
+//   }
 
   interface IProfileInput{
     FirstName : string
     LastName : string
     Email : string
+    fileInput:File
   }
 
   interface LinkContextProps {
@@ -48,23 +54,28 @@ enum Platform {
 export default function Dashboard() {
     const navigate = useNavigate();
   const { control } = useForm<IProfileInput>()
+  const [selectedFile, setSelectedFile] =  useState<File | null>(null);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        setSelectedFile(file);
+      }
+  };
     const [profile, setProfile] = useState(false)
-    const [preview, setPreview] = useState(false)
     const [addLink, setAddLink] = useState([{}])
 
     const [values, setValues] = useState<IFormInput>({ LinkUrl: 'e.g. https://www.github.com/johnappleseed', Platform: Platform.GitHub });
 
     const showPreview = () => {
-        // setPreview(true)
         navigate("/preview");
 
     }
-
-    console.log("addLink",addLink);
-
-
-   
+    const logout = () => {
+        localStorage.removeItem("token");
+        navigate('/')
+      }
+  
    
   return (
     <LinkContext.Provider value={{values,setValues}}>
@@ -82,7 +93,8 @@ export default function Dashboard() {
 
         </div>
         <div>
-            <Button onClick={()=>showPreview()} className={`${!preview?"!bg-[#fff] hover:!bg-[#EFEBFF] !border-[1px] !border-[#633CFF] !text-[#633CFF]":"!bg-[#fff] hover:!text-[#633CFF] !text-[#737373] !text-[16px] "} !w-[200px] flex justify-center items-center`}>Preview</Button>
+            <Button onClick={()=>showPreview()} className={`!bg-[#fff] hover:!text-[#633CFF] !text-[#737373] !text-[16px] !w-[200px] flex justify-center items-center`}>Preview</Button>
+            <Button onClick={()=>logout()} className={`!bg-[#fff] hover:!text-[#633CFF] !text-[#737373] !text-[16px] !w-[200px] flex justify-center items-center`}>Logout</Button>
         </div>
         </div>
         </div>
@@ -96,7 +108,7 @@ export default function Dashboard() {
                 <h1 className='text-[#333] font-bold text-[32px]'>{`${!profile?"Customize your links":"Profile Details"}`}</h1>
                 <p className='text-[#737373] font-normal text-[16px] mt-5 mb-7'>{`${!profile?"Add/edit/remove links below and then share all your profiles with the world!":"Add your details to create a personal touch to your profile."}`}</p>
 
-               {!profile&& <Button onClick={()=>setAddLink((prevLinks) => [...prevLinks, values])} className={`${!preview?"!bg-[#fff] hover:!bg-[#EFEBFF] !border-[1px] !border-[#633CFF] !text-[#633CFF]":"!bg-[#fff] hover:!text-[#633CFF] !text-[#737373] !text-[16px] "} !w-full flex justify-center items-center shadow-none`}>+ Add new link</Button>}
+               {!profile&& <Button onClick={()=>setAddLink((prevLinks) => [...prevLinks, values])} className={`!bg-[#fff] hover:!text-[#633CFF] !text-[#737373] !text-[16px] !w-full flex justify-center items-center shadow-none`}>+ Add new link</Button>}
 
                 {!profile ? <div className='p-5  h-96 overflow-y-auto '>
                    {addLink.length<2? <div className=' mx-auto bg-[#FAFAFA] w-full'>
@@ -112,17 +124,40 @@ export default function Dashboard() {
                             <p className='text-[16px] font-normal text-[#737373]'>Profile picture</p>
                         </div>
                         <div className='bg-[#EFEBFF] flex flex-col h-52 justify-center items-center'>
-                            <div>
+                           { !selectedFile ?<div>
                             <img src='images/icon-upload-image.svg' alt='' className='w-7 mx-auto my-2' />
-                            <div className='text-[16px] font-semibold text-[#633CFF]'>+ Upload Image</div>
+                            <div className='text-[16px] font-semibold text-[#633CFF]'></div>
+                            <div>
+                            <Controller
+                            name="fileInput"
+                            control={control}
+                            render={() => (
+                                <div>
+                                <input
+                                    type="file"
+                                    id="fileInput"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
+                                {!selectedFile ?<label
+                                    htmlFor="fileInput"
+                                    className="w-1/2 !border-[#D9D9D9] !border-[1px] !rounded-xl cursor-pointer"
+                                >
+                                    + Upload Image
+                                </label>:<img src={URL.createObjectURL(selectedFile)} alt="" className='w-9 h-9' />}
+                                </div>
+                            )}
+                            />
                             </div>
+                            
+                            </div>:<img src={URL.createObjectURL(selectedFile)} alt="" className='w-full h-full object-contain' />}
                         </div>
                         <div className='flex flex-col justify-center items-end'>
-                            <p className='text-[16px] font-normal text-[#737373]'>Image must be below 1024x1024px. Use PNG or JPG format.</p>
+                            <p className='text-[16px] font-normal text-right text-[#737373]'>Image must be below 1024x1024px. Use PNG or JPG format.</p>
                         </div>
                     </div>
 
-                    <div className='bg-[#FAFAFA] p-5'>
+                    <div className='bg-[#FAFAFA] p-5 mt-5'>
                         <div className='flex justify-between items-center'>
                         <InputLabel className='!text-[16px] !font-normal !text-[#737373] !my-1' id="FirstName">First name*</InputLabel>
        
@@ -193,6 +228,7 @@ export default function Dashboard() {
     </div>
     </LinkContext.Provider>
   )
+            
 }
 
 export {LinkContext}

@@ -3,14 +3,17 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { InputAdornment, InputLabel } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import Button from '../../Components/Button';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../../contexts/User'; 
 interface IFormInput {
   Email: string
   Password: string
 }
 
 function SignUp() {
+  const navigate = useNavigate();
+  const {addUser} = useUser()
+
   const {
     register,
     handleSubmit,
@@ -25,7 +28,12 @@ function SignUp() {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data)
+
+    if (!data) return
+
+    addUser({ data, isLogin:false })
     reset()
+    navigate('/')
   }
 
   return (
@@ -97,7 +105,7 @@ function SignUp() {
           
           </div>
 
-          <div className='my-7'>
+          {/* <div className='my-7'>
           <InputLabel htmlFor="Password">
           Confirm password
           </InputLabel>
@@ -124,7 +132,7 @@ function SignUp() {
           
           />
           
-          </div>
+          </div> */}
 
           <p className='text-[12px] text-[#737373] my-5'>Password must contain at least 8 characters</p>
          
