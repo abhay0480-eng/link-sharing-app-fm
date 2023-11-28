@@ -22,11 +22,6 @@ interface User {
 }
 
 function App() {
-
-
-
-
-
   const [users, setUsers] = useState<User[]>([]);
 
   const router = createBrowserRouter(
@@ -51,10 +46,8 @@ function App() {
 
   useEffect(() => {
     const storedUsers = localStorage.getItem("users");
-  
     if (storedUsers) {
       const parsedUsers = JSON.parse(storedUsers);
-      
       if (Array.isArray(parsedUsers) && parsedUsers.length > 0) {
         setUsers(parsedUsers);
       }

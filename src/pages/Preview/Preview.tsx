@@ -1,12 +1,15 @@
 import React from 'react'
 import ImageIcon from '../../Components/ImageIcon'
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../contexts/AuthContext';
 
 const Preview = () => {
     const navigate = useNavigate();
+    const { token } = useAuth();
+
 
     function editor(){
-        navigate('/dashboard')
+        navigate(`/dashboard/${token}`)
     }
   return (
     <div className=' relative h-screen'>

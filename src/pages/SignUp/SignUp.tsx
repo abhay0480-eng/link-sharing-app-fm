@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '../../Components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../contexts/User'; 
+import { useState } from 'react';
 interface IFormInput {
   Email: string
   Password: string
@@ -12,7 +13,11 @@ interface IFormInput {
 
 function SignUp() {
   const navigate = useNavigate();
-  const {addUser} = useUser()
+  const {addUser,users} = useUser()
+  const [error, setError] = useState("")
+
+  console.log("users",users);
+  
 
   const {
     register,
@@ -22,14 +27,18 @@ function SignUp() {
     formState: { errors },
   } = useForm<IFormInput>()
 
-
-
-
-
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data)
 
     if (!data) return
+
+   const isEmailMatch = users.map(item => item.data.Email === data.Email).includes(true);
+
+   console.log("isEmailMatch",isEmailMatch);
+
+   if(isEmailMatch){
+    return setError("Already Register")
+   }
 
     addUser({ data, isLogin:false })
     reset()
@@ -104,6 +113,7 @@ function SignUp() {
           />
           
           </div>
+         
 
           {/* <div className='my-7'>
           <InputLabel htmlFor="Password">
@@ -138,6 +148,7 @@ function SignUp() {
          
           <Button>Create new account</Button>
         </form>
+        {error&&<p className='text-[16px] text-[#a14040] text-center my-3'>{error}</p>}
         <p className='text-[16px] text-[#737373] text-center mt-7'>Already have an account?<Link className='cursor-pointer text-[#633CFF]' to='/'> Login </Link> </p>
       </div>
     </div>

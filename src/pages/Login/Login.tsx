@@ -1,4 +1,3 @@
-
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { InputAdornment, InputLabel } from '@mui/material'
 import TextField from '@mui/material/TextField';
@@ -13,11 +12,8 @@ interface IFormInput {
   Password: string
 }
 
-
-
 function Login() {
   const navigate = useNavigate();
-
   const {users,updateUser} = useUser()
   
   const {
@@ -28,13 +24,10 @@ function Login() {
     formState: { errors },
   } = useForm<IFormInput>()
 
-
   const [error,setError] = useState({
     email:"",
     password:""
   })
-
-
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     users.map((item) => {
@@ -54,10 +47,9 @@ function Login() {
       }
     })
      reset()
-   
   }
- 
 
+  
   return (
    <div className='flex flex-col h-screen  justify-center bg-[#FAFAFA]'>
     <div>
