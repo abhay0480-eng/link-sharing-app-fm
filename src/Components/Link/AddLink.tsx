@@ -1,9 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 // import ImageIcon from '../ImageIcon'
 import { Controller,  useForm } from 'react-hook-form'
 import { LinkContext } from '../../pages/Dashboard/Dashboard'
 import {  InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import ImageIcon from '../ImageIcon'
+import { useUserData } from '../../contexts/UserData'
 
 
 enum Platform {
@@ -29,7 +30,10 @@ interface IFormInput {
 }
 type FieldName = keyof IFormInput;
 
-const AddLink: React.FC<{ index: number }> = ({index}) => {
+const AddLink: React.FC<{ index: number, item: unknown, id:unknown }> = ({index,item,id}) => {
+const {updateIndex, deleteUserData} = useUserData()
+
+  console.log("item",item);
   // const { control, setValue, getValues } = useForm<IFormInput>()
   const { control } = useForm<IFormInput>()
 
@@ -39,21 +43,28 @@ const AddLink: React.FC<{ index: number }> = ({index}) => {
   }
 
   const { values, setValues } = linkContext;
+  
 
-  const handleFieldChange = (fieldName: FieldName, value: string | Platform) => {
+
+
+  const handleFieldChange = (fieldName: FieldName, value: string | Platform, index: number) => {
     setValues((prevValues) => ({
       ...prevValues,
       [fieldName]: value,
     }));
+
+    updateIndex(index)
   };
 
-  console.log("values",values);
+
+
+ 
   
   return (
     <div className='p-5 my-4'>
         <div className='flex justify-between items-center'>
             <div className='text-[16px] font-bold text-[#737373]'>{`Link #${index}`}</div>
-            <div className='text-[16px] font-normal text-[#737373]'>Remove</div>
+            <div  onClick={()=> deleteUserData(id,index-1)} className='text-[16px] font-normal text-[#737373] cursor-pointer'>Remove</div>
         </div>
         {/* <label>Platform</label> */}
         <InputLabel className='!text-[12px] !font-normal !text-[#333] !my-2' id="demo-simple-select-label">Platform</InputLabel>
@@ -66,13 +77,14 @@ const AddLink: React.FC<{ index: number }> = ({index}) => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               defaultValue={Platform.GitHub}
+              value={item?.Platform}
               className='w-full border-[#D9D9D9] !border-[1px] !rounded-xl'
-              onChange={(e) => handleFieldChange("Platform",e.target.value as Platform)}
+              onChange={(e) => handleFieldChange("Platform",e.target.value as Platform,index-1)}
             >
               {Object.values(Platform).map((platform) => (
                 <MenuItem key={platform} value={platform}>
                   <div className='flex'>
-                  <ImageIcon img={`icon-github`} className='mr-4'/>{platform}
+                  <ImageIcon img={`${platform}`} className='mr-4'/>{platform}
                   </div>
                 </MenuItem>
               ))}
@@ -98,7 +110,8 @@ const AddLink: React.FC<{ index: number }> = ({index}) => {
             ),
           }}
           {...field} 
-          onChange={(e) => handleFieldChange("LinkUrl", e.target.value)}
+          value={item?.LinkUrl}
+          onChange={(e) => handleFieldChange("LinkUrl", e.target.value,index-1)}
           defaultValue="e.g. https://www.github.com/johnappleseed"
           />}
         />

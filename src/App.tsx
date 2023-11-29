@@ -12,6 +12,7 @@ import Preview from "./pages/Preview/Preview";
 import { LoginProvider } from "./contexts/User";
 import { useEffect, useState } from "react";
 import Layout from "./Layout";
+import { UserDataProvider } from "./contexts/UserData";
 
 interface User {
   id: string; // or number, depending on your requirements
@@ -21,8 +22,37 @@ interface User {
   // Add other properties as needed
 }
 
+interface Link {
+  platform: string;
+  link: string;
+}
+
+interface UserData {
+  id: string;
+  links: Link[];
+  profileImage: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface IIndex {
+  indx: number
+}
+
+interface IProfile {
+    image: File
+    firstName: string
+    lastName:string
+    email:string
+}
+
 function App() {
   const [users, setUsers] = useState<User[]>([]);
+  const [usersData, setUsersData] = useState<UserData[]>([]);
+  const [indx, setIndx] = useState<IIndex>();
+
+ 
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,7 +60,7 @@ function App() {
         <Route path='' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/dashboard/:id' element={<Dashboard />} />
-        <Route path='/preview' element={<Preview />} />
+        <Route path='/preview/:id' element={<Preview />} />
       </Route>
     )
   )
@@ -42,6 +72,8 @@ function App() {
   const updateUser = (user: User, id: string) => {
     setUsers((prev) => prev.map((prevUser) => (prevUser.id === id ? user : prevUser )));
   }
+
+  
 
 
   useEffect(() => {
@@ -55,12 +87,155 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const storedUsersData = localStorage.getItem("usersData");
+    if (storedUsersData) {
+      const parsedUsersData = JSON.parse(storedUsersData);
+      if (Array.isArray(parsedUsersData) && parsedUsersData.length > 0) {
+        setUsersData(parsedUsersData);
+      }
+    }
+  }, []);
+
+  // const addUserData = (newLink: Link, userId: string, firstName?: string, lastName?: string, email?: string, profileImage?: string) => {
+    
+  //   setUsersData((prevData: UserData[]) => {
+  //     // Find the user with the given userId
+  //     const userIndex = prevData.findIndex(user => user.id===userId);
+  //     // If the user is found, add the new link to their links array
+  //     if (userIndex !== -1) {
+  //       return [
+  //         ...prevData.slice(0, userIndex),
+  //         {
+  //           ...prevData[userIndex],
+  //           links: [...prevData[userIndex].links, newLink],
+  //         },
+  //         ...prevData.slice(userIndex + 1),
+  //       ];
+  //     }
+  
+  //     // If the user is not found, return the original array
+  //     return [
+  //       ...prevData,
+  //       {
+  //         id: userId,
+  //         links: [newLink],
+  //         profileImage: "",  // Add the other necessary fields here
+  //         firstName: "",
+  //         lastName: "",
+  //         email: "",
+  //       },
+  //     ];
+  //   });
+  // };
+
+  const addUserData = (newLink?: Link, userId: string, firstName?: string, lastName?: string, email?: string, profileImage?: string) => {
+    console.log("newLink",newLink);
+    
+    setUsersData((prevData: UserData[]) => {
+      // Find the user with the given userId
+      const userIndex = prevData.findIndex(user => user.id === userId);
+  
+      // If the user is found, add the new link to their links array
+      if (userIndex !== -1) {
+        return [
+          ...prevData.slice(0, userIndex),
+          {
+            ...prevData[userIndex],
+            links: newLink !== undefined ? [...prevData[userIndex].links, newLink] : prevData[userIndex].links,
+            firstName: firstName !== undefined ? firstName : prevData[userIndex].firstName,
+            lastName: lastName !== undefined ? lastName : prevData[userIndex].lastName,
+            email: email !== undefined ? email : prevData[userIndex].email,
+            profileImage: profileImage !== undefined ? profileImage : prevData[userIndex].profileImage,
+          },
+          ...prevData.slice(userIndex + 1),
+        ];
+      }
+  
+      // If the user is not found, return the original array
+      return [
+        ...prevData,
+        {
+          id: userId,
+          links: newLink !== undefined ? [newLink] : [],
+          firstName: firstName !== undefined ? firstName : "",
+          lastName: lastName !== undefined ? lastName : "",
+          email: email !== undefined ? email : "",
+          profileImage: profileImage !== undefined ? profileImage : "",
+        },
+      ];
+    });
+  };
+  
+
+  const updateUserData = (userId: string, linkIndex: number, updatedLink: Link) => {
+    setUsersData((prevData: UserData[]) => {
+      // Find the user with the given userId
+      const userIndex = prevData.findIndex(user => user.id === userId);
+  
+      // If the user is found, update the link at the specified index
+      if (userIndex !== -1) {
+        const updatedUserData = [...prevData];
+        const updatedUser = { ...updatedUserData[userIndex] };
+  
+        // Make sure the linkIndex is within bounds
+        if (linkIndex >= 0 && linkIndex < updatedUser.links.length ) {
+          updatedUser.links[linkIndex] = updatedLink;
+          updatedUserData[userIndex] = updatedUser;
+        }
+  
+        return updatedUserData;
+      }
+  
+      // If the user is not found, return the original array
+      return prevData;
+    });
+  };
+
+  const deleteUserData = (userId: string, linkIndex: number) => {
+    setUsersData((prevData: UserData[]) => {
+      // Find the user with the given userId
+      const userIndex = prevData.findIndex(user => user.id === userId);
+  
+      // If the user is found, delete the link at the specified index
+      if (userIndex !== -1) {
+        const updatedUserData = [...prevData];
+        const updatedUser = { ...updatedUserData[userIndex] };
+  
+        // Make sure the linkIndex is within bounds
+        if (linkIndex >= 0 && linkIndex < updatedUser.links.length) {
+          updatedUser.links.splice(linkIndex, 1);
+          updatedUserData[userIndex] = updatedUser;
+        }
+  
+        return updatedUserData;
+      }
+  
+      // If the user is not found, return the original array
+      return prevData;
+    });
+  };
+  
+
+  const updateIndex = (indx : number) => {
+    setIndx(indx )
+  } 
+  
+
+
+
+  useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users))
   }, [users])
 
+  useEffect(() => {
+    localStorage.setItem("usersData", JSON.stringify(usersData))
+  }, [usersData])
+
   return (
      <LoginProvider value={{users,addUser,updateUser}}>
+      <UserDataProvider value={{usersData,addUserData,updateUserData,updateIndex,indx,deleteUserData}}>
       <RouterProvider router={router} />
+      </UserDataProvider>
      </LoginProvider>
   )
 }

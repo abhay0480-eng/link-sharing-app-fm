@@ -68,7 +68,10 @@ function SignUp() {
             variant="outlined" 
             placeholder='e.g. alex@email.com'
             className='w-full '  
-            {...register("Email",  { required: true })}
+            {...register("Email", {
+              required: true,
+              pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Email pattern regex
+            })}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
