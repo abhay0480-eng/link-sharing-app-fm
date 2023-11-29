@@ -23,8 +23,8 @@ interface User {
 }
 
 interface Link {
-  platform: string;
-  link: string;
+  Platform: string;
+  LinkUrl: string;
 }
 
 interface UserData {
@@ -34,25 +34,21 @@ interface UserData {
   firstName: string;
   lastName: string;
   email: string;
+  indx?: number;
 }
 
-interface IIndex {
-  indx: number
-}
+// interface IIndex {
+//   indx: number
+// }
 
-interface IProfile {
-    image: File
-    firstName: string
-    lastName:string
-    email:string
-}
+
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [usersData, setUsersData] = useState<UserData[]>([]);
-  const [indx, setIndx] = useState<IIndex>();
-
- 
+  // const [indx, setIndx] = useState<IIndex>();
+  // const [indx, setIndx] = useState()
+  const [indx, setIndx] = useState<number>(-1);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -65,9 +61,13 @@ function App() {
     )
   )
 
-  const addUser = (user) => {
-    setUsers((prev: User[]) => [{ id: Date.now(), ...user }, ...prev]);
-  }
+  // const addUser = (user: User) => {
+  //   setUsers((prev: User[]) => [{ id: Date.now(), ...user }, ...prev]);
+  // }
+
+  const addUser = (user: User) => {
+    setUsers((prev: User[]) => [{ ...user, id: Date.now().toString() }, ...prev]);
+  };
 
   const updateUser = (user: User, id: string) => {
     setUsers((prev) => prev.map((prevUser) => (prevUser.id === id ? user : prevUser )));
@@ -96,40 +96,8 @@ function App() {
     }
   }, []);
 
-  // const addUserData = (newLink: Link, userId: string, firstName?: string, lastName?: string, email?: string, profileImage?: string) => {
-    
-  //   setUsersData((prevData: UserData[]) => {
-  //     // Find the user with the given userId
-  //     const userIndex = prevData.findIndex(user => user.id===userId);
-  //     // If the user is found, add the new link to their links array
-  //     if (userIndex !== -1) {
-  //       return [
-  //         ...prevData.slice(0, userIndex),
-  //         {
-  //           ...prevData[userIndex],
-  //           links: [...prevData[userIndex].links, newLink],
-  //         },
-  //         ...prevData.slice(userIndex + 1),
-  //       ];
-  //     }
-  
-  //     // If the user is not found, return the original array
-  //     return [
-  //       ...prevData,
-  //       {
-  //         id: userId,
-  //         links: [newLink],
-  //         profileImage: "",  // Add the other necessary fields here
-  //         firstName: "",
-  //         lastName: "",
-  //         email: "",
-  //       },
-  //     ];
-  //   });
-  // };
-
-  const addUserData = (newLink?: Link, userId: string, firstName?: string, lastName?: string, email?: string, profileImage?: string) => {
-    console.log("newLink",newLink);
+  const addUserData = (userId: string, newLink?: Link,  firstName?: string, lastName?: string, email?: string, profileImage?: string ) => {
+    // console.log("newLink",newLink);
     
     setUsersData((prevData: UserData[]) => {
       // Find the user with the given userId
@@ -216,12 +184,9 @@ function App() {
   };
   
 
-  const updateIndex = (indx : number) => {
-    setIndx(indx )
-  } 
-  
-
-
+  const updateIndex = (newIndex: number) => {
+    setIndx(newIndex);
+  };
 
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users))
@@ -233,7 +198,7 @@ function App() {
 
   return (
      <LoginProvider value={{users,addUser,updateUser}}>
-      <UserDataProvider value={{usersData,addUserData,updateUserData,updateIndex,indx,deleteUserData}}>
+      <UserDataProvider value={{indx,usersData,addUserData,updateUserData,updateIndex,deleteUserData}}>
       <RouterProvider router={router} />
       </UserDataProvider>
      </LoginProvider>
@@ -241,12 +206,3 @@ function App() {
 }
 
 export default App
-
-
-
-
-
-
-
-
-

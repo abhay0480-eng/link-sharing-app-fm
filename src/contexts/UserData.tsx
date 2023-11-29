@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 
 import { createContext, useContext } from "react";
 
@@ -7,8 +9,8 @@ export const UserDataContext = createContext({
         {
             id:"123",
             links:[{
-                platform:"",
-                link:"",
+                Platform:"",
+                LinkUrl:"",
             }],
             profileImage:"",
             firstName:"",
@@ -19,7 +21,7 @@ export const UserDataContext = createContext({
 
     indx:1,
     updateIndex: (index) => {},
-    addUserData: (newLink?,userId,firstName?,lastName?,email?,profileImage?) => {},
+    addUserData: (userId,newLink?,firstName?,lastName?,email?,profileImage?) => {},
     updateUserData: (userId, linkIndex, updatedLink) => {},
     deleteUserData: (userId, linkIndex) => {},
 })
@@ -31,65 +33,3 @@ export const useUserData = () => {
 }
 
 export const UserDataProvider = UserDataContext.Provider
-
-
-
-// import React, { createContext, useContext, ReactNode, FC } from "react";
-
-// interface Link {
-//     platform: string;
-//     link: string;
-// }
-
-// interface UserData {
-//     id: string;
-//     links: Link[];
-//     profileImage: string;
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-// }
-
-// interface UserDataContextType {
-//     usersData: UserData[];
-//     addUserData: (userData: UserData) => void;
-//     updateUserData: (id: string, userData: UserData) => void;
-// }
-
-// const defaultUserData: UserDataContextType = {
-//     usersData: [
-//         {
-//             id: "123",
-//             links: [
-//                 {
-//                     platform: "",
-//                     link: "",
-//                 },
-//             ],
-//             profileImage: "",
-//             firstName: "",
-//             lastName: "",
-//             email: "",
-//         },
-//     ],
-//     addUserData: () => {},
-//     updateUserData: () => {},
-// };
-
-// export const UserDataContext = createContext<UserDataContextType>(defaultUserData);
-
-// export const useUser = () => {
-//     return useContext(UserDataContext);
-// };
-
-// interface UserDataProviderProps {
-//     children: ReactNode;
-// }
-
-// export const UserDataProvider: FC<UserDataProviderProps> = ({ children }) => {
-//     return (
-//         <UserDataContext.Provider value={defaultUserData as UserDataContextType}>
-//             {children}
-//         </UserDataContext.Provider>
-//     );
-// };

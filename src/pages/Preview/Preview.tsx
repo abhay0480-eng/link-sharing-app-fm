@@ -1,6 +1,5 @@
-import React from 'react'
-import ImageIcon from '../../Components/ImageIcon'
-import { Link, useNavigate, useParams } from "react-router-dom";
+
+import {  useNavigate, useParams } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 import { useUserData } from '../../contexts/UserData';
 import Button from '../../Components/Button';

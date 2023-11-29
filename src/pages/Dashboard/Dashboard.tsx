@@ -7,7 +7,7 @@ import { InputLabel, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "../../contexts/UserData";
-import { useUser } from "../../contexts/User";
+// import { useUser } from "../../contexts/User";
 enum Platform {
     GitHub = "GitHub",
     FrontendMentor = "Frontend Mentor",
@@ -102,13 +102,13 @@ const fileUrl = selectedFile ? URL.createObjectURL(selectedFile) : null;
   const addLinks = () => {
     const userIdToAddLinkTo = id
     console.log("values",values);
-    !user[0]?.links?.length? addUserData(values, userIdToAddLinkTo): user[0]?.links?.length<5 ? addUserData(values, userIdToAddLinkTo): ""
+    !user[0]?.links?.length? addUserData(userIdToAddLinkTo,values ): user[0]?.links?.length<5 ? addUserData(userIdToAddLinkTo,values): ""
   }
  
 
   const addProfileDetails = () => {
     const userIdToAddLinkTo = id
-    addUserData(undefined,userIdToAddLinkTo,profileDetails.firstName,profileDetails.lastName,profileDetails.email,fileUrl);
+    addUserData(userIdToAddLinkTo,undefined,profileDetails.firstName,profileDetails.lastName,profileDetails.email,fileUrl);
   }
 
 
