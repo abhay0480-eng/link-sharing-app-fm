@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 
@@ -20,14 +21,14 @@ export const UserDataContext = createContext({
     ],
 
     indx:1,
-    // updateIndex: (index) => {},
-    // addUserData: (userId,newLink?,firstName?,lastName?,email?,profileImage?) => {},
-    // updateUserData: (userId, linkIndex, updatedLink) => {},
-    // deleteUserData: (userId, linkIndex) => {},
-    updateIndex: () => {},
-    addUserData: () => {},
-    updateUserData: () => {},
-    deleteUserData: () => {},
+    updateIndex: (_index: unknown) => {},
+    addUserData: (_userId: unknown,_newLink?: any,_firstName?: any,_lastName?: any,_email?: any,_profileImage?: any) => {},
+    updateUserData: (_userId: any, _linkIndex: any, _updatedLink: any) => {},
+    deleteUserData: (_userId: any, _linkIndex: any) => {},
+    // updateIndex: () => {},
+    // addUserData: () => {},
+    // updateUserData: () => {},
+    // deleteUserData: () => {},
 })
 
 

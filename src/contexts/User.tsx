@@ -43,8 +43,10 @@ const initialUserContext: UserContextType = {
       isLogin: false,
     },
   ],
-  addUser: () => {},
-  updateUser: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  addUser: (_user) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  updateUser: (_id, _user) => {},
 };
 
 export const UserContext = createContext<UserContextType>(initialUserContext);
