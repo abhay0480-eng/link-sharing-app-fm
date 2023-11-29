@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 // import ImageIcon from '../ImageIcon'
 import { Controller,  useForm } from 'react-hook-form'
 import { LinkContext } from '../../pages/Dashboard/Dashboard'
@@ -30,7 +30,7 @@ interface IFormInput {
 }
 type FieldName = keyof IFormInput;
 
-const AddLink: React.FC<{ index: number, item: unknown, id:unknown }> = ({index,item,id}) => {
+const AddLink: React.FC<{ index: number; item: { LinkUrl: string; Platform: Platform }; id: unknown }> = ({ index, item, id }) => {
 const {updateIndex, deleteUserData} = useUserData()
 
   console.log("item",item);
@@ -42,7 +42,7 @@ const {updateIndex, deleteUserData} = useUserData()
     return null; 
   }
 
-  const { values, setValues } = linkContext;
+  const { setValues } = linkContext;
   
 
 

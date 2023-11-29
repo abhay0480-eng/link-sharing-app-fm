@@ -20,10 +20,14 @@ export const UserDataContext = createContext({
     ],
 
     indx:1,
-    updateIndex: (index) => {},
-    addUserData: (userId,newLink?,firstName?,lastName?,email?,profileImage?) => {},
-    updateUserData: (userId, linkIndex, updatedLink) => {},
-    deleteUserData: (userId, linkIndex) => {},
+    // updateIndex: (index) => {},
+    // addUserData: (userId,newLink?,firstName?,lastName?,email?,profileImage?) => {},
+    // updateUserData: (userId, linkIndex, updatedLink) => {},
+    // deleteUserData: (userId, linkIndex) => {},
+    updateIndex: () => {},
+    addUserData: () => {},
+    updateUserData: () => {},
+    deleteUserData: () => {},
 })
 
 

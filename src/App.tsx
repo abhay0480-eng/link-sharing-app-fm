@@ -11,8 +11,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Preview from "./pages/Preview/Preview";
 import { LoginProvider } from "./contexts/User";
 import { useEffect, useState } from "react";
-import Layout from "./Layout";
 import { UserDataProvider } from "./contexts/UserData";
+import Layout from "./Layout";
 
 interface User {
   id: string; // or number, depending on your requirements
