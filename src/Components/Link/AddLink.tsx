@@ -30,7 +30,7 @@ interface IFormInput {
 }
 type FieldName = keyof IFormInput;
 
-const AddLink: React.FC<{ index: number; item: { LinkUrl: string; Platform: Platform }; id: unknown }> = ({ index, item, id }) => {
+const AddLink: React.FC<{ index: number; item: {Platform: Platform, LinkUrl: string  }; id: unknown }> = ({ index, item, id }) => {
 const {updateIndex, deleteUserData} = useUserData()
 
   console.log("item",item);

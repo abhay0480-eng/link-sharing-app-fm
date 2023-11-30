@@ -4,6 +4,21 @@
 
 import { createContext, useContext } from "react";
 
+interface Link {
+    Platform: string;
+    LinkUrl: string;
+  }
+  
+//   interface UserData {
+//     id: string;
+//     links: Link[];
+//     profileImage: string;
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     indx?: number;
+//   }
+
 export const UserDataContext = createContext({
 
     usersData:[
@@ -21,8 +36,8 @@ export const UserDataContext = createContext({
     ],
 
     indx:1,
-    updateIndex: (_index: unknown) => {},
-    addUserData: (_userId: unknown,_newLink?: any,_firstName?: any,_lastName?: any,_email?: any,_profileImage?: any) => {},
+    updateIndex: (_index: number) => {},
+    addUserData: (_userId: string,_newLink?: Link,_firstName?: string,_lastName?: string,_email?: string,_profileImage?: string) => {},
     updateUserData: (_userId: any, _linkIndex: any, _updatedLink: any) => {},
     deleteUserData: (_userId: any, _linkIndex: any) => {},
     // updateIndex: () => {},

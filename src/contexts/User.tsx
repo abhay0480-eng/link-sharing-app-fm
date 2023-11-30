@@ -22,6 +22,7 @@
 import { createContext, useContext, ReactNode } from "react";
 
 interface User {
+  data: unknown;
   id: string;
   email: string;
   password: string;
@@ -35,9 +36,9 @@ interface UserContextType {
 }
 
 const initialUserContext: UserContextType = {
-  users: [
-    {
+  users: [{
       id: "123",
+      data: {},
       email: "abhay@gmail.com",
       password: "12345",
       isLogin: false,

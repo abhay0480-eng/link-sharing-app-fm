@@ -37,17 +37,11 @@ interface UserData {
   indx?: number;
 }
 
-// interface IIndex {
-//   indx: number
-// }
-
 
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [usersData, setUsersData] = useState<UserData[]>([]);
-  // const [indx, setIndx] = useState<IIndex>();
-  // const [indx, setIndx] = useState()
   const [indx, setIndx] = useState<number>(-1);
 
   const router = createBrowserRouter(

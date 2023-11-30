@@ -40,7 +40,12 @@ function SignUp() {
     return setError("Already Register")
    }
 
-    addUser({ data, isLogin:false })
+    addUser({
+      data, isLogin: false,
+      id: '',
+      email: '',
+      password: ''
+    })
     reset()
     navigate('/')
   }

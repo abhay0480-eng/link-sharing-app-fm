@@ -35,7 +35,7 @@ function Login() {
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     users.map((item) => {
       if(item.data.Email === data.Email && item.data.Password === data.Password){
-        updateUser({  ...item,isLogin:true },item.id)
+        updateUser({  ...item, isLogin:true },item.id)
         localStorage.setItem("token", JSON.stringify(item.id))
         navigate(`/dashboard/${item.id}`);
       }
